@@ -5,6 +5,7 @@ import { env } from "@/data/env/server";
 import { db } from "@/drizzle/db";
 import { UserSubscriptionTable } from "@/drizzle/schema";
 import { createUserSubscription } from "@/server/db/subscription";
+import { deleteUser } from "@/server/db/users";
 // import {
 //   createUserSubscription,
 //   getUserSubscription,
@@ -65,6 +66,12 @@ export async function POST(req: Request) {
     //     await deleteUser(event.data.id)
     //   }
     // }
+    case "user.deleted": {
+      if (event.data.id != null) {
+        await deleteUser(event.data.id);
+        // TODO: remove striple subscription
+      }
+    }
   }
 
   return new Response("", { status: 200 });
